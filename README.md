@@ -56,6 +56,7 @@ To run:
 
 ```bash
 python3 fda_test.py
+```
 
 ## Exercise 2 - FastAPI User Service
 
