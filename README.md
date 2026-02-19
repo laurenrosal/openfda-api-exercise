@@ -56,3 +56,16 @@ To run:
 
 ```bash
 python3 fda_test.py
+
+## Exercise 2 - FastAPI User Service
+
+Implemented a simple FastAPI application supporting:
+
+- Create user
+- Retrieve user by ID
+- List users
+- Return 409 if username exists
+- Add text notes
+- Read text notes
+
+Tested using Swagger UI at /docs.
