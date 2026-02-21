@@ -1,71 +1,67 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Dict, List
 
 app = FastAPI()
 
-# In-memory storage
-users: Dict[int, dict] = {}
-notes: Dict[int, List[str]] = {}
+users = {}
+notes = {}
 current_id = 1
 
 
-class UserCreate(BaseModel):
+class User(BaseModel):
     username: str
 
 
-class NoteCreate(BaseModel):
+class Note(BaseModel):
     text: str
 
 
-#Create account
+# Create account
 @app.post("/users", status_code=201)
-def create_user(user: UserCreate):
+def create_user(user: User):
     global current_id
 
-    # Check if username already exists
+    # check duplicate username
     for u in users.values():
         if u["username"] == user.username:
             raise HTTPException(status_code=409, detail="Username already exists")
 
-    new_user = {
+    users[current_id] = {
         "id": current_id,
         "username": user.username
     }
 
-    users[current_id] = new_user
     notes[current_id] = []
     current_id += 1
 
-    return new_user
+    return users[current_id - 1]
 
 
-#Retrieve account by id
+# Retrieve account by id
 @app.get("/users/{user_id}")
 def get_user(user_id: int):
     if user_id not in users:
         raise HTTPException(status_code=404, detail="User not found")
-
     return users[user_id]
 
 
-#List all users
+# List all users
 @app.get("/users")
 def list_users():
     return list(users.values())
 
 
-#Add text note
+# Add text note
 @app.post("/users/{user_id}/notes", status_code=201)
-def add_note(user_id: int, note: NoteCreate):
+def add_note(user_id: int, note: Note):
     if user_id not in users:
         raise HTTPException(status_code=404, detail="User not found")
 
     notes[user_id].append(note.text)
-    return {"message": "Note added", "notes": notes[user_id]}
+    return {"notes": notes[user_id]}
 
 
-#Read text notes
+# Read text notes
 @app.get("/users/{user_id}/notes")
 def get_notes(user_id: int):
     if user_id not in users:
