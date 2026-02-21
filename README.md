@@ -70,3 +70,33 @@ Implemented a simple FastAPI application supporting:
 - Read text notes
 
 Tested using Swagger UI at /docs.
+---
+
+# Code Review Summary
+
+## openFDA API Script
+
+Strengths:
+- Correct use of query parameters (`search`, `limit`, `skip`)
+- Proper handling of pagination
+- Graceful handling of empty or error responses
+- Extracts relevant fields from nested JSON
+- Clear structure and readable logic
+
+The implementation focuses on clarity and correctness rather than over-engineering, which fits the scope of the exercise.
+
+---
+
+## FastAPI User Service
+
+Strengths:
+- Correct HTTP status codes:
+  - `201` for successful creation
+  - `409` for duplicate usernames
+  - `404` for missing users
+- Clean route structure
+- Proper request body validation using Pydantic
+- Simple in-memory data storage appropriate for a small exercise
+- Successfully tested using Swagger UI
+
+Overall, both exercises demonstrate correct API usage, backend logic implementation, and proper handling of common edge cases.
